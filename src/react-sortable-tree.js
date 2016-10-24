@@ -206,7 +206,7 @@ class ReactSortableTree extends Component {
         });
     }
 
-    dragHover({ node: draggedNode, path, depth, minimumTreeIndex }) {
+    dragHover({ node: draggedNode, depth, minimumTreeIndex }) {
         const addedResult = insertNode({
             treeData: this.state.draggingTreeData,
             newNode: draggedNode,
@@ -221,12 +221,6 @@ class ReactSortableTree extends Component {
         const swapFrom   = addedResult.treeIndex;
         const swapTo     = minimumTreeIndex;
         const swapLength = 1 + getDescendantCount({ node: draggedNode });
-
-        if(path.length !== expandedParentPath.length)
-            return;
-
-        console.log(path, depth, minimumTreeIndex, addedResult);
-
         this.setState({
             rows: swapRows(rows, swapFrom, swapTo, swapLength),
             swapFrom,
@@ -242,9 +236,7 @@ class ReactSortableTree extends Component {
     }
 
     endDrag(dropResult) {
-        console.log("END DRAG", dropResult);
-
-        if (!dropResult || dropResult.depth !== dropResult.path.length-1) {
+        if (!dropResult) {
             return this.setState({
                 draggingTreeData: null,
                 swapFrom: null,
